@@ -1,0 +1,38 @@
+{
+    "music": {
+        "music1": "music/1.mp3",
+        "music2": "music/2.mp3",
+        "music3": "music/3.mp3",
+        "music4": "music/4.mp3"
+    },
+    "open": {
+        "pfoto1": "file/1.png",
+        "pfoto2": "file/2.png",
+        "pfoto3": "file/3.png",
+        "pfoto4": "file/4.mp3",
+        "pfoto5": "file/5.png",
+        "pfoto6": "file/6.png",
+        "pfoto7": "file/7.png",
+        "pfoto8": "file/8.png",
+        "pfoto9": "file/9.png"
+    },
+    "all": {
+        "help": "music1, ",
+        "check": "yes"
+    },
+    "bot": {
+        "ip": "none",
+        "user": [
+            "all"
+        ],
+        "ban": [
+            "none"
+        ]
+    },
+    "article": {
+        "bot": "unix",
+        "dicord": "https://discord.gg/article",
+        "version": "2.20",
+        "paradise": "1.00"
+    }
+}
