@@ -1,16 +1,1 @@
-# Auto detect text files and perform LF normalization
 * text=auto
-
-core/src/httplib.cc linguist-documentation
-core/lib/*.h linguist-documentation
-core/lib/*.cc linguist-documentation
-core/lib/*.i linguist-documentation
-core/src/*.cc linguist-documentation
-
-core/lib/webview.h linguist-documentation
-core/lib/webview_mingw_support.h linguist-documentation
-core/include/httplib.h linguist-documentation
-core/lib/webview.cc linguist-documentation
-core/lib/webview_test.cc linguist-documentation
-
-code.d linguist-documentation
