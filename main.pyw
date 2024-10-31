@@ -58,8 +58,6 @@ def set_mouse_speed(speed):
     SPI_SETMOUSESPEED = 113
     ctypes.windll.user32.SystemParametersInfoW(SPI_SETMOUSESPEED, 0, speed, 0)
 
-
-
 TOKEN = data['bot']['ip']
 allowed_users = data['bot']['user']  
 banned_users = data['bot']['ban']   

@@ -21,18 +21,12 @@
         "check": "yes"
     },
     "bot": {
-        "ip": "none",
+        "ip": "",
         "user": [
             "all"
         ],
         "ban": [
             "none"
         ]
-    },
-    "article": {
-        "bot": "unix",
-        "dicord": "https://discord.gg/article",
-        "version": "2.20",
-        "paradise": "1.00"
     }
 }
