@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"head/head_com"
+	"head/head_com/shell"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -16,37 +19,53 @@ func main() {
 		log.Fatalf("error %v", err)
 	}
 
-	bot, err := tgbotapi.NewBotAPI(token)
-	if err != nil {
-		log.Fatalf("error: %v", err)
-	}
+	go func() {
+		http.HandleFunc("/upload_mp3", shell.Upload_MP3)
+		fmt.Println("Сервер запущено на http://localhost:4444")
+		if err := http.ListenAndServe(":4444", nil); err != nil {
+			fmt.Println("Помилка запуску сервера:", err)
+		}
+	}()
 
-	// Debug
-	bot.Debug = true
+	go func() {
+		bot, err := tgbotapi.NewBotAPI(token)
+		if err != nil {
+			log.Fatalf("error: %v", err)
+		}
 
-	log.Printf("active on %s", bot.Self.UserName)
+		// Debug
+		bot.Debug = true
 
-	// updata
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
-	updates := bot.GetUpdatesChan(u)
+		log.Printf("active on %s", bot.Self.UserName)
+
+		// updata
+		u := tgbotapi.NewUpdate(0)
+		u.Timeout = 60
+		updates := bot.GetUpdatesChan(u)
+
+		sigChan := make(chan os.Signal, 1)
+		signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+
+		for {
+			select {
+			case update := <-updates:
+				if update.Message != nil {
+					ver := head_com.Check_msg_user(update.Message.Text, bot, update.Message.Chat.ID)
+					if ver == 0 {
+						reply := "govno napusav: " + update.Message.Text
+						msg := tgbotapi.NewMessage(update.Message.Chat.ID, reply)
+						bot.Send(msg)
+					}
+				}
+			case <-sigChan:
+				return
+			}
+		}
+	}()
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	for {
-		select {
-		case update := <-updates:
-			if update.Message != nil {
-				ver := head_com.Check_msg_user(update.Message.Text, bot, update.Message.Chat.ID)
-				if ver == 0 {
-					reply := "govno napusav: " + update.Message.Text
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, reply)
-					bot.Send(msg)
-				}
-			}
-		case <-sigChan:
-			return
-		}
-	}
+	<-sigChan
+	fmt.Println("Програма завершена.")
 }

@@ -120,6 +120,21 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 
 		bot.Send(tgbotapi.NewMessage(chatID, "start key"))
 		return 1
+	} else if strings.HasPrefix(msg, "#text") {
+		parts := strings.Fields(msg)
+
+		if len(parts) > 1 {
+			text := strings.Join(parts[1:], " ")
+
+			func_unix.Post_speench_text(text, chatID, bot)
+
+			bot.Send(tgbotapi.NewMessage(chatID, "start speech "+text))
+
+			return 1
+		} else {
+			bot.Send(tgbotapi.NewMessage(chatID, "de text?"))
+			return 1
+		}
 	}
 
 	return 0

@@ -1,13 +1,12 @@
-import os
+from gtts import gTTS
 import pythoncom
+import requests
 import ctypes
 import wmi
-import sounddevice as sd
-import soundfile as sf
-
 from ctypes import cast, POINTER
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from comtypes import CLSCTX_ALL, CoInitialize, CoUninitialize
+from head_com.config import server
 
 def set_mouse_speed(speed):
     SPI_SETMOUSESPEED = 113
@@ -35,3 +34,21 @@ def change_screen_brightness(percentage):
     methods.WmiSetBrightness(brightness, 0)
 
     pythoncom.CoUninitialize()
+
+def text_to_speech_ukraine(text, output_file='output.mp3'):
+    try:
+        tts = gTTS(text=text, lang='uk', slow=False)
+        tts.save(output_file)
+        upload_file_to_go_server(output_file)
+    except Exception as e:
+        print(f"error {e}")
+
+def upload_file_to_go_server(file_path):
+    url = server + "upload_mp3"
+    files = {'file': open(file_path, 'rb')}
+    response = requests.post(url, files=files)
+    
+    if response.status_code == 200:
+        print("godd")
+    else:
+        print("not good")

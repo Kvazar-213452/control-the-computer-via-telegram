@@ -4,7 +4,8 @@ import pyautogui
 from head_com.func import (
     set_sound_volume,
     set_mouse_speed,
-    change_screen_brightness
+    change_screen_brightness,
+    text_to_speech_ukraine
 )
 
 app = Flask(__name__)
@@ -48,16 +49,24 @@ def index_3():
     data = request.get_json()
     
     keys = data.get('volume', None)
-    print(f"Received keys: {keys}")
 
     if keys is None:
         return jsonify({'error': 'No keys value provided'}), 400
     
     json_array = json.loads(keys)
-
     pyautogui.hotkey(*json_array)
 
-    return jsonify({'message': 'Keys pressed successfully'})
+    return jsonify({'message': 'good'})
+
+@app.route('/speench_text', methods=['POST'])
+def index_4():
+    data = request.get_json()
+    
+    text = data.get('volume', None)
+
+    text_to_speech_ukraine(text)
+
+    return jsonify({'message': 'good'})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4444)
