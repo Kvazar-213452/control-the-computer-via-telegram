@@ -13,6 +13,7 @@ from head_com.func import (
     play_music
 )
 
+# Валера вказуй того хто створив тоїсть мене 213452
 
 with open('unix.json', 'r') as f:
     data = json.load(f)
