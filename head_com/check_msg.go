@@ -1,7 +1,10 @@
 package head_com
 
 import (
+	"encoding/json"
+	"fmt"
 	"head/head_com/func_unix"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -15,16 +18,18 @@ type VolumeRequest struct {
 
 func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 	if msg == "#help" {
-		msg := tgbotapi.NewMessage(chatID, "ok")
-		bot.Send(msg)
+		text, err := Read_file("data/help.unix")
+		if err != nil {
+			log.Fatalf("error %v", err)
+		}
+
+		bot.Send(tgbotapi.NewMessage(chatID, text))
 		return 1
 	} else if msg == "/start" {
-		msg := tgbotapi.NewMessage(chatID, "viva 213452!")
-		bot.Send(msg)
+		bot.Send(tgbotapi.NewMessage(chatID, "viva 213452!"))
 		return 1
 	} else if msg == "#off" {
-		msg := tgbotapi.NewMessage(chatID, "bot off")
-		bot.Send(msg)
+		bot.Send(tgbotapi.NewMessage(chatID, "bot off"))
 		os.Exit(0)
 
 		return 1
@@ -87,6 +92,33 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 		go func_unix.Start_music(int(volume), chatID, bot)
 
 		bot.Send(tgbotapi.NewMessage(chatID, "start music"))
+		return 1
+	} else if msg == "#sleep" {
+		func_unix.Sleep_pc()
+		bot.Send(tgbotapi.NewMessage(chatID, "sleep"))
+		return 1
+	} else if msg == "#shutdown" {
+		func_unix.Shutdown_pc()
+		bot.Send(tgbotapi.NewMessage(chatID, "Shutdown"))
+		return 1
+	} else if msg == "#reboot" {
+		func_unix.Reboot_pc()
+		bot.Send(tgbotapi.NewMessage(chatID, "reboot"))
+		return 1
+	} else if strings.HasPrefix(msg, "#key") {
+		parts := strings.Fields(msg)
+
+		args := parts[1:]
+
+		argsJSON, err := json.Marshal(args)
+		if err != nil {
+			fmt.Println("Error marshalling to JSON:", err)
+			return 1
+		}
+
+		func_unix.Post_key_unix(string(argsJSON), chatID, bot)
+
+		bot.Send(tgbotapi.NewMessage(chatID, "start key"))
 		return 1
 	}
 

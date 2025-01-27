@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify
+import json
+import pyautogui
 from head_com.func import (
     set_sound_volume,
     set_mouse_speed,
@@ -40,6 +42,22 @@ def index_0():
     change_screen_brightness(val)
 
     return jsonify({'message': 'ok'})
+
+@app.route('/key_unix', methods=['POST'])
+def index_3():
+    data = request.get_json()
+    
+    keys = data.get('volume', None)
+    print(f"Received keys: {keys}")
+
+    if keys is None:
+        return jsonify({'error': 'No keys value provided'}), 400
+    
+    json_array = json.loads(keys)
+
+    pyautogui.hotkey(*json_array)
+
+    return jsonify({'message': 'Keys pressed successfully'})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4444)

@@ -31,9 +31,7 @@ def change_screen_brightness(percentage):
     brightness = int(percentage * 255 / 100)
     c = wmi.WMI(namespace='wmi')
 
-    # Підключення до методу зміни яскравості
     methods = c.WmiMonitorBrightnessMethods()[0]
     methods.WmiSetBrightness(brightness, 0)
 
-    # Завершення роботи COM бібліотек після використання
     pythoncom.CoUninitialize()

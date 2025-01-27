@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"time"
 
 	"github.com/faiface/beep/mp3"
@@ -73,4 +74,32 @@ func Start_music(volume int, chatID int64, bot *tgbotapi.BotAPI) {
 	speaker.Play(streamer)
 
 	select {}
+}
+
+// pc_func// pc_func
+// pc_func// pc_func
+// pc_func// pc_func
+
+func Sleep_pc() {
+	cmd := exec.Command("rundll32.exe", "powrprof.dll,SetSuspendState", "Sleep")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println("Error putting system to sleep:", err)
+	}
+}
+
+func Shutdown_pc() {
+	cmd := exec.Command("shutdown", "/s", "/t", "1")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println("Error shutting down the system:", err)
+	}
+}
+
+func Reboot_pc() {
+	cmd := exec.Command("shutdown", "/r", "/t", "1")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println("Error rebooting the system:", err)
+	}
 }
