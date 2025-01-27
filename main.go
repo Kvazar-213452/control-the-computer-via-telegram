@@ -13,18 +13,18 @@ import (
 func main() {
 	token, err := head_com.Read_file("data.unix")
 	if err != nil {
-		log.Fatalf("Помилка при читанні токена: %v", err)
+		log.Fatalf("error %v", err)
 	}
 
 	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
-		log.Fatalf("Помилка при створенні бота: %v", err)
+		log.Fatalf("error: %v", err)
 	}
 
 	// Debug
 	bot.Debug = true
 
-	log.Printf("Авторизовано як %s", bot.Self.UserName)
+	log.Printf("active on %s", bot.Self.UserName)
 
 	// updata
 	u := tgbotapi.NewUpdate(0)

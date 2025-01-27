@@ -1,34 +1,45 @@
 from flask import Flask, request, jsonify
-from ctypes import cast, POINTER
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-from comtypes import CLSCTX_ALL, CoInitialize, CoUninitialize
+from head_com.func import (
+    set_sound_volume,
+    set_mouse_speed,
+    change_screen_brightness
+)
 
 app = Flask(__name__)
 
-def set_sound_volume(volume_percentage):
-    CoInitialize()
-
-    try:
-        devices = AudioUtilities.GetSpeakers()
-        interface = devices.Activate(
-            IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-        volume = cast(interface, POINTER(IAudioEndpointVolume))
-        volume.SetMasterVolumeLevelScalar(volume_percentage / 100, None)
-    finally:
-        CoUninitialize()
-
 @app.route('/set_volume', methods=['POST'])
-def set_volume():
+def index_1():
     data = request.get_json()
-    volume_percentage = data.get('volume', None)
-    if volume_percentage is None:
+    val = data.get('volume', None)
+    if val is None:
         return jsonify({'error': 'No volume value provided'}), 400
 
-    print(volume_percentage)
-    set_sound_volume(volume_percentage)
+    set_sound_volume(val)
 
-    return jsonify({'message': f'Рівень звуку змінено на {volume_percentage}%'})
+    return jsonify({'message': 'ok'})
 
-# Запуск Flask серверу
+@app.route('/set_mouse_speed', methods=['POST'])
+def index_2():
+    data = request.get_json()
+    val = data.get('volume', None)
+    if val is None:
+        return jsonify({'error': 'No volume value provided'}), 400
+
+    set_mouse_speed(val)
+
+    return jsonify({'message': 'ok'})
+
+
+@app.route('/change_screen_brightness', methods=['POST'])
+def index_0():
+    data = request.get_json()
+    val = data.get('volume', None)
+    if val is None:
+        return jsonify({'error': 'No volume value provided'}), 400
+
+    change_screen_brightness(val)
+
+    return jsonify({'message': 'ok'})
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=4444)

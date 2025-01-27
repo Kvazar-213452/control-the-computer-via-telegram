@@ -1,0 +1,76 @@
+package func_unix
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/faiface/beep/mp3"
+	"github.com/faiface/beep/speaker"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+)
+
+func GetMusicFileByKey(key int) (string, error) {
+	file, err := os.Open("data/music.json")
+	if err != nil {
+		return "", fmt.Errorf("error open the door: %v", err)
+	}
+	defer file.Close()
+
+	var musicMap map[string]string
+
+	decoder := json.NewDecoder(file)
+	err = decoder.Decode(&musicMap)
+	if err != nil {
+		return "", fmt.Errorf("error json: %v", err)
+	}
+
+	keyStr := fmt.Sprintf("%d", key)
+
+	if value, exists := musicMap[keyStr]; exists {
+		return value, nil
+	}
+
+	return "", fmt.Errorf("none key")
+}
+
+// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
+// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
+// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
+// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
+// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
+// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
+// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
+
+func Start_music(volume int, chatID int64, bot *tgbotapi.BotAPI) {
+	filePath, err := GetMusicFileByKey(volume)
+	if err != nil {
+		fmt.Println("error:", err)
+		return
+	}
+
+	f, err := os.Open(filePath)
+	if err != nil {
+		bot.Send(tgbotapi.NewMessage(chatID, "invalid nema music"))
+		return
+	}
+	defer f.Close()
+
+	streamer, format, err := mp3.Decode(f)
+	if err != nil {
+		bot.Send(tgbotapi.NewMessage(chatID, "invalid format"))
+		return
+	}
+	defer streamer.Close()
+
+	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	if err != nil {
+		bot.Send(tgbotapi.NewMessage(chatID, "invalid cod gavno"))
+		return
+	}
+
+	speaker.Play(streamer)
+
+	select {}
+}
