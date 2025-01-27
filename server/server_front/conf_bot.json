@@ -16,12 +16,7 @@
         "pfoto8": "file/8.png",
         "pfoto9": "file/9.png"
     },
-    "all": {
-        "help": "music1, ",
-        "check": "yes"
-    },
     "bot": {
-        "ip": "",
         "user": [
             "all"
         ],
