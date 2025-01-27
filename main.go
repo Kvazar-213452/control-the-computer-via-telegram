@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"head/head_com"
+	"head/head_com/config"
 	"head/head_com/shell"
 	"log"
 	"net/http"
@@ -21,9 +22,8 @@ func main() {
 
 	go func() {
 		http.HandleFunc("/upload_mp3", shell.Upload_MP3)
-		fmt.Println("Сервер запущено на http://localhost:4444")
-		if err := http.ListenAndServe(":4444", nil); err != nil {
-			fmt.Println("Помилка запуску сервера:", err)
+		if err := http.ListenAndServe(config.Port, nil); err != nil {
+			fmt.Println("error", err)
 		}
 	}()
 
@@ -67,5 +67,5 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	<-sigChan
-	fmt.Println("Програма завершена.")
+	fmt.Println("end")
 }

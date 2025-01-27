@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"syscall"
 	"time"
 
 	"github.com/faiface/beep/mp3"
@@ -12,8 +13,8 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-func GetMusicFileByKey(key int) (string, error) {
-	file, err := os.Open("data/music.json")
+func Get_file_key(key int, file_1 string) (string, error) {
+	file, err := os.Open(file_1)
 	if err != nil {
 		return "", fmt.Errorf("error open the door: %v", err)
 	}
@@ -45,7 +46,7 @@ func GetMusicFileByKey(key int) (string, error) {
 // unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
 
 func Start_music(volume int, chatID int64, bot *tgbotapi.BotAPI) {
-	filePath, err := GetMusicFileByKey(volume)
+	filePath, err := Get_file_key(volume, "data/music.json")
 	if err != nil {
 		fmt.Println("error:", err)
 		return
@@ -74,6 +75,34 @@ func Start_music(volume int, chatID int64, bot *tgbotapi.BotAPI) {
 	speaker.Play(streamer)
 
 	select {}
+}
+
+func Open_foto(volume int, chatID int64, bot *tgbotapi.BotAPI) {
+	filePath, err := Get_file_key(volume, "data/foto.json")
+	if err != nil {
+		fmt.Println("error:", err)
+		return
+	}
+
+	_, err = os.Stat(filePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			fmt.Println("error")
+		} else {
+			fmt.Println("error:", err)
+		}
+		return
+	}
+
+	cmd := exec.Command("cmd", "/C", "start", filePath)
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+
+	err = cmd.Start()
+	if err != nil {
+		fmt.Println("error:", err)
+	} else {
+		fmt.Println("good")
+	}
 }
 
 // pc_func// pc_func

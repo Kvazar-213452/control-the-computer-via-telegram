@@ -126,7 +126,7 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 		if len(parts) > 1 {
 			text := strings.Join(parts[1:], " ")
 
-			func_unix.Post_speench_text(text, chatID, bot)
+			go func_unix.Post_speench_text(text, chatID, bot)
 
 			bot.Send(tgbotapi.NewMessage(chatID, "start speech "+text))
 
@@ -135,6 +135,18 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 			bot.Send(tgbotapi.NewMessage(chatID, "de text?"))
 			return 1
 		}
+	} else if strings.HasPrefix(msg, "#foto") {
+		parts := strings.Fields(msg)
+		volume, err := strconv.ParseFloat(parts[1], 64)
+		if err != nil || volume < 0 || volume > 100 {
+			bot.Send(tgbotapi.NewMessage(chatID, "diapazon (0-100)."))
+			return 0
+		}
+
+		func_unix.Open_foto(int(volume), chatID, bot)
+
+		bot.Send(tgbotapi.NewMessage(chatID, "start music"))
+		return 1
 	}
 
 	return 0

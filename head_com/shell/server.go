@@ -15,7 +15,7 @@ func Upload_MP3(w http.ResponseWriter, r *http.Request) {
 		}
 		defer file.Close()
 
-		outFile, err := os.Create("uploaded_output.mp3")
+		outFile, err := os.Create("data_use/uploaded_output.mp3")
 		if err != nil {
 			http.Error(w, "error", http.StatusInternalServerError)
 			return

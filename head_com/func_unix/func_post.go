@@ -7,7 +7,11 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"time"
 
+	"github.com/faiface/beep/mp3"
+	"github.com/faiface/beep/speaker"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
@@ -167,4 +171,40 @@ func Post_speench_text(volume string, chatID int64, bot *tgbotapi.BotAPI) {
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 		log.Fatalf("Error decoding response: %v", err)
 	}
+
+	done := make(chan struct{})
+	go start_music(chatID, bot, done)
+
+	<-done
+}
+
+func start_music(chatID int64, bot *tgbotapi.BotAPI, done chan struct{}) {
+	f, err := os.Open("data_use/uploaded_output.mp3")
+	if err != nil {
+		bot.Send(tgbotapi.NewMessage(chatID, "invalid nema music"))
+		close(done)
+		return
+	}
+	defer f.Close()
+
+	streamer, format, err := mp3.Decode(f)
+	if err != nil {
+		bot.Send(tgbotapi.NewMessage(chatID, "invalid format"))
+		close(done)
+		return
+	}
+	defer streamer.Close()
+
+	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	if err != nil {
+		bot.Send(tgbotapi.NewMessage(chatID, "invalid cod gavno"))
+		close(done)
+		return
+	}
+
+	speaker.Play(streamer)
+
+	select {}
+
+	close(done)
 }
