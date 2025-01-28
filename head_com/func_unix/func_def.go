@@ -132,3 +132,12 @@ func Reboot_pc() {
 		fmt.Println("Error rebooting the system:", err)
 	}
 }
+
+func Disable_WiFi() error {
+	cmd := exec.Command("netsh", "interface", "set", "interface", "Wi-Fi", "disabled")
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("error Wi-Fi: %v", err)
+	}
+	return nil
+}
