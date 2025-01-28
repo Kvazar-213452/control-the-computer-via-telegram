@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPX</title>
-    <link rel="stylesheet" href="public/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Завантаження файлу</title>
 </head>
 <body>
-    <div class="main">
-        <h2>viva 213452!</h2>
-        <br>
-        <div class="div_d">
-            <div class="paddding">
-                <h3>#user</h3>
-                <p>end</p>
-            </div>
-        </div>
-    </div>
+  <h1>Завантажте файл разом із текстом</h1>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <label for="text">Введіть текст:</label>
+    <input type="text" id="text" name="text" required>
+    <br><br>
+    <label for="file">Виберіть файл:</label>
+    <input type="file" id="file" name="file" required>
+    <br><br>
+    <button type="submit">Завантажити</button>
+  </form>
+  <form action="/foto" method="POST" enctype="multipart/form-data">
+    <label for="text">ps:</label>
+    <input type="text" id="text" name="text" required>
+    <br><br>
+    <label for="file">Виберіть файл:</label>
+    <input type="file" id="file" name="file" required>
+    <br><br>
+    <button type="submit">Завантажити</button>
+  </form>
 </body>
 </html>

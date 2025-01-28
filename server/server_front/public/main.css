@@ -37,3 +37,7 @@ body {
 .paddding h3 {color: var(--main_color);}
 .paddding p {font-size: 15px;}
 h2 {color: var(--main_color);}
+
+input {
+    background-color: var(--bg_5);
+}

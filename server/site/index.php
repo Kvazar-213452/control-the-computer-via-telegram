@@ -84,6 +84,18 @@
                     <p>биреш #foto і пишеш індекс і заєбісь хуйня</p>
                 </div>
             </div>
+            <div class="div_d">
+                <div class="paddding">
+                    <h3>#bot1</h3>
+                    <p>соний режим бота</p>
+                </div>
+            </div>
+            <div class="div_d">
+                <div class="paddding">
+                    <h3>#bot0</h3>
+                    <p>активоманий бот</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>

@@ -16,8 +16,20 @@ type VolumeRequest struct {
 	Volume float64 `json:"volume"`
 }
 
+var let_start = 1
+
 func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
-	if msg == "#help" {
+	if msg == "#bot1" {
+		let_start = 1
+		bot.Send(tgbotapi.NewMessage(chatID, "set_1 unix"))
+		return 1
+	} else if msg == "#bot0" {
+		let_start = 0
+		bot.Send(tgbotapi.NewMessage(chatID, "set0 unix"))
+		return 1
+	} else if let_start == 1 {
+		return 1
+	} else if msg == "#help" {
 		text, err := Read_file("data/help.unix")
 		if err != nil {
 			log.Fatalf("error %v", err)
