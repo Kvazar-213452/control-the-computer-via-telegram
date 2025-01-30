@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/music', (req, res) => {
-  fs.readFile('music.json', (err, data) => {
+  fs.readFile('data/music.json', (err, data) => {
     if (err) {
       res.status(500).send('Error reading the file');
     } else {
@@ -39,7 +39,7 @@ app.get('/music', (req, res) => {
 });
 
 app.get('/foto', (req, res) => {
-  fs.readFile('foto.json', (err, data) => {
+  fs.readFile('data/foto.json', (err, data) => {
     if (err) {
       res.status(500).send('Error reading the file');
     } else {
@@ -56,7 +56,7 @@ app.post('/upload_music', upload.single('file'), (req, res) => {
     return res.status(400).send('error.');
   }
 
-  const jsonFilePath = path.join(__dirname, 'music.json');
+  const jsonFilePath = path.join(__dirname, 'data/music.json');
 
   if (fs.existsSync(jsonFilePath)) {
     const fileContent = fs.readFileSync(jsonFilePath, 'utf-8');
@@ -78,7 +78,7 @@ app.post('/upload_foto', upload.single('file'), (req, res) => {
     return res.status(400).send('error.');
   }
 
-  const jsonFilePath = path.join(__dirname, 'music.json');
+  const jsonFilePath = path.join(__dirname, 'data/foto.json');
 
   if (fs.existsSync(jsonFilePath)) {
     const fileContent = fs.readFileSync(jsonFilePath, 'utf-8');
