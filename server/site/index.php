@@ -93,7 +93,7 @@
             <div class="div_d">
                 <div class="paddding">
                     <h3>#bot0</h3>
-                    <p>активоманий бот</p>
+                    <p>активований бот</p>
                 </div>
             </div>
         </div>

@@ -6,9 +6,10 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, 'files'));
+    cb(null, path.join(__dirname, 'public/file'));
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now();
@@ -17,18 +18,6 @@ const storage = multer.diskStorage({
     cb(null, `${originalName}-${uniqueSuffix}${extension}`);
   },
 });
-
-app.post('/data', (req, res) => {
-  const { name, age } = req.body;
-
-  if (!name || !age) {
-    return res.status(400).json({ error: 'Name and age are required.' });
-  }
-
-  const filePath = path.join(__dirname, 'main.json');
-  res.sendFile(filePath);
-});
-
 const upload = multer({ storage });
 
 app.set('view engine', 'ejs');
@@ -39,32 +28,68 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.post('/upload', upload.single('file'), (req, res) => {
+app.get('/music', (req, res) => {
+  fs.readFile('music.json', (err, data) => {
+    if (err) {
+      res.status(500).send('Error reading the file');
+    } else {
+      res.json(JSON.parse(data));
+    }
+  });
+});
+
+app.get('/foto', (req, res) => {
+  fs.readFile('foto.json', (err, data) => {
+    if (err) {
+      res.status(500).send('Error reading the file');
+    } else {
+      res.json(JSON.parse(data));
+    }
+  });
+});
+
+app.post('/upload_music', upload.single('file'), (req, res) => {
   const text = req.body.text;
-  let fff = text;
   const file = req.file;
 
   if (!file || !text) {
-    return res.status(400).send('Файл або текст не надано.');
+    return res.status(400).send('error.');
   }
 
-  const jsonFilePath = path.join(__dirname, 'main.json');
+  const jsonFilePath = path.join(__dirname, 'music.json');
 
-  let jsonData = [];
   if (fs.existsSync(jsonFilePath)) {
     const fileContent = fs.readFileSync(jsonFilePath, 'utf-8');
     jsonData = JSON.parse(fileContent);
   }
 
-  jsonData.push([fff, file.originalname]);
-  
+  jsonData[text] = "http://localhost:3000/file/" + file.filename;
+
   fs.writeFileSync(jsonFilePath, JSON.stringify(jsonData, null, 2), 'utf-8');
 
-  res.send(`Файл "${file.originalname}" і текст "${text}" успішно додано до першого об'єкта JSON.`);
+  res.send("ok");
 });
 
-app.use((req, res) => {
-  res.status(404).render('404', { title: '404 - Сторінку не знайдено' });
+app.post('/upload_foto', upload.single('file'), (req, res) => {
+  const text = req.body.text;
+  const file = req.file;
+
+  if (!file || !text) {
+    return res.status(400).send('error.');
+  }
+
+  const jsonFilePath = path.join(__dirname, 'music.json');
+
+  if (fs.existsSync(jsonFilePath)) {
+    const fileContent = fs.readFileSync(jsonFilePath, 'utf-8');
+    jsonData = JSON.parse(fileContent);
+  }
+
+  jsonData[text] = "http://localhost:3000/file/" + file.filename;
+
+  fs.writeFileSync(jsonFilePath, JSON.stringify(jsonData, null, 2), 'utf-8');
+
+  res.send("ok");
 });
 
 app.listen(PORT, () => {

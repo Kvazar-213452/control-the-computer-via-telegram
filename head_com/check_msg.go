@@ -16,7 +16,7 @@ type VolumeRequest struct {
 	Volume float64 `json:"volume"`
 }
 
-var let_start = 1
+var let_start = 0
 
 func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 	if msg == "#bot1" {
@@ -157,8 +157,18 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 
 		func_unix.Open_foto(int(volume), chatID, bot)
 
-		bot.Send(tgbotapi.NewMessage(chatID, "start music"))
+		bot.Send(tgbotapi.NewMessage(chatID, "start foto"))
 		return 1
+	} else if msg == "#updata" {
+		let_ := func_unix.Updata_all()
+
+		if let_ == 1 {
+			bot.Send(tgbotapi.NewMessage(chatID, "updata"))
+			return 1
+		} else {
+			bot.Send(tgbotapi.NewMessage(chatID, "updata error"))
+			return 0
+		}
 	}
 
 	return 0
