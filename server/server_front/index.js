@@ -6,6 +6,7 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const Server_url = Server_url + "http://localhost:3000/";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -63,7 +64,7 @@ app.post('/upload_music', upload.single('file'), (req, res) => {
     jsonData = JSON.parse(fileContent);
   }
 
-  jsonData[text] = "http://localhost:3000/file/" + file.filename;
+  jsonData[text] = Server_url + "file/" + file.filename;
 
   fs.writeFileSync(jsonFilePath, JSON.stringify(jsonData, null, 2), 'utf-8');
 
@@ -85,7 +86,7 @@ app.post('/upload_foto', upload.single('file'), (req, res) => {
     jsonData = JSON.parse(fileContent);
   }
 
-  jsonData[text] = "http://localhost:3000/file/" + file.filename;
+  jsonData[text] = Server_url + "file/" + file.filename;
 
   fs.writeFileSync(jsonFilePath, JSON.stringify(jsonData, null, 2), 'utf-8');
 

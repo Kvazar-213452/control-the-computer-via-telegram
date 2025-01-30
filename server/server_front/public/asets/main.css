@@ -11,7 +11,7 @@
 
 @font-face {
     font-family: 'MyCustomFont';
-    src: url('Minecraft_1.1.ttf') format('truetype');
+    src: url('http://localhost:3000/asets/Minecraft_1.1.ttf') format('truetype');
 }
 
 body {
@@ -20,24 +20,43 @@ body {
     color: white;
 }
 
-.div_d {
-    background-color: var(--bg_1);
-    margin-bottom: 15px;
-    position: relative;
-}
-
 * {
+    font-family: 'MyCustomFont';
     margin: 0;
     padding: 0;
     font-weight: normal !important;
 }
 
 .main {padding: 20px;}
-.paddding {padding: 10px;}
-.paddding h3 {color: var(--main_color);}
-.paddding p {font-size: 15px;}
 h2 {color: var(--main_color);}
 
 input {
-    background-color: var(--bg_5);
+    background-color: var(--bg_1);
+    padding: 4px;
+    border: none;
+    font-size: 12px;
+    color: white;
+    width: 50px;
+}
+
+input:active {color: var(--main_color);}
+label {font-size: 13px;}
+#file_music,
+#file_foto {display: none;}
+
+.custom-file-upload {
+    background-color: var(--bg_1);
+    color: var(--main_color);
+    padding: 7px;
+    font-size: 14px;
+}
+
+.ss2 {
+    position: relative;
+    border: none;
+    padding: 6px;
+    font-size: 13px;
+    color: white;
+    cursor: pointer;
+    background-color: var(--bg_1);
 }

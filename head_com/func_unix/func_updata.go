@@ -3,6 +3,7 @@ package func_unix
 import (
 	"encoding/json"
 	"fmt"
+	"head/head_com/config"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -13,7 +14,7 @@ import (
 type Data_Updata map[string]string
 
 func Updata_all() int {
-	resp, err := http.Get("http://localhost:3000/music")
+	resp, err := http.Get(config.Server_data + "music")
 	if err != nil {
 		fmt.Println("error:", err)
 		return 1
@@ -58,7 +59,7 @@ func Updata_all() int {
 
 	var folot_data Data_Updata
 
-	resp, err = http.Get("http://localhost:3000/foto")
+	resp, err = http.Get(config.Server_data + "foto")
 	if err != nil {
 		fmt.Println("error:", err)
 		return 1
