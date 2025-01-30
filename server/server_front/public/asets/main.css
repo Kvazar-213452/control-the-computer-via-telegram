@@ -60,3 +60,44 @@ label {font-size: 13px;}
     cursor: pointer;
     background-color: var(--bg_1);
 }
+
+.console {
+    background-color: var(--bg_1);
+    padding: 10px;
+    font-size: 15px;
+}
+
+.console p {
+    position: relative;
+    margin-bottom: 10px;
+    color: var(--main_color);
+}
+
+.data {
+    position: relative;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: var(--bg_1);
+}
+
+.item {
+    position: relative;
+    margin-bottom: 10px;
+    width: 90%;
+    padding: 7px;
+    font-size: 14px;
+    color: var(--main_color);
+    background-color: var(--bg_2);
+    white-space: nowrap;
+    overflow: auto;
+}
+
+.item span {color: white;}
+.ttw {margin-bottom: 5px;}
+
+.item p {
+    position: relative;
+    float: left;
+    color: #fd4b4b;
+    margin-right: 5px;
+}
