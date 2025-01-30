@@ -1,5 +1,5 @@
 function upload_foto() {
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append('text', $('#text_foto').val());
     formData.append('file', $('#file_foto')[0].files[0]);
 
@@ -10,16 +10,16 @@ function upload_foto() {
         contentType: false,
         processData: false,
         success: function(response) {
-            $(".console").append("<p>good</p>")
+            $(".console").append("<p>-- good</p>")
         },
         error: function(xhr, status, error) {
-            $(".console").append("<p>error dwn folo</p>")
+            $(".console").append("<p>-- error dwn folo</p>")
         }
     });
 }
 
 function upload_music() {
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append('text', $('#text_music').val());
     formData.append('file', $('#file_music')[0].files[0]);
 
@@ -30,23 +30,23 @@ function upload_music() {
       contentType: false,
       processData: false,
       success: function(response) {
-        $(".console").append("<p>good</p>")
+        $(".console").append("<p>-- good</p>")
       },
       error: function(xhr, status, error) {
-        $(".console").append("<p>error dwn music</p>")
+        $(".console").append("<p>-- error dwn music</p>")
       }
     });
 }
 
 function get_data() {
-    $(".console").append("<p>get_data</p>")
+    $(".console").append("<p>-- get_data</p>")
 
     $.get('/music', function(data) {
         $("#data_music").html(null)
 
         for (let key in data) {
             if (data.hasOwnProperty(key)) {
-                let text = `<div class="item"><p>del</p> ${key}: <span>${data[key]}</span></div>`;
+                let text = `<div class="item"><p onclick="del_music('${key}')">del</p> ${key}: <span>${data[key]}</span></div>`;
 
                 $("#data_music").append(text)
             }
@@ -58,10 +58,40 @@ function get_data() {
 
         for (let key in data) {
             if (data.hasOwnProperty(key)) {
-                let text = `<div class="item"><p>del</p> ${key}: <span>${data[key]}</span></div>`;
+                let text = `<div class="item"><p onclick="del_foto('${key}')">del</p> ${key}: <span>${data[key]}</span></div>`;
 
                 $("#data_foto").append(text)
             }
+        }
+    });
+}
+
+function del_music(text_) {
+    console.log(text_)
+    let data = {text: text_};
+
+    $.ajax({
+        url: "/del_music",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (response) {
+            $(".console").append("<p>-- good del</p>")
+        }
+    });
+}
+
+function del_foto(text_) {
+    console.log(text_)
+    let data = {text: text_};
+
+    $.ajax({
+        url: "/del_foto",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (response) {
+            $(".console").append("<p>-- good del</p>")
         }
     });
 }
