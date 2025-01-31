@@ -169,6 +169,22 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 			bot.Send(tgbotapi.NewMessage(chatID, "updata error"))
 			return 0
 		}
+	} else if msg == "#data_foto" {
+		data, err := os.ReadFile("data/foto.json")
+		if err != nil {
+			bot.Send(tgbotapi.NewMessage(chatID, "error"))
+		}
+
+		bot.Send(tgbotapi.NewMessage(chatID, string(data)))
+		return 1
+	} else if msg == "#data_music" {
+		data, err := os.ReadFile("data/music.json")
+		if err != nil {
+			bot.Send(tgbotapi.NewMessage(chatID, "error"))
+		}
+
+		bot.Send(tgbotapi.NewMessage(chatID, string(data)))
+		return 1
 	}
 
 	return 0
