@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	token, err := head_com.Read_file("data.unix")
+	token, err := head_com.Read_file("data/data.unix")
 	if err != nil {
 		log.Fatalf("error %v", err)
 	}
