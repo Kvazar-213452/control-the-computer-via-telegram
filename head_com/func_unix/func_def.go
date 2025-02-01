@@ -3,6 +3,7 @@ package func_unix
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"syscall"
@@ -140,4 +141,34 @@ func Disable_WiFi() error {
 		return fmt.Errorf("error Wi-Fi: %v", err)
 	}
 	return nil
+}
+
+// func_pad// func_pad// func_pad
+// func_pad// func_pad// func_pad
+// func_pad// func_pad// func_pad
+
+func Pad_text(text string) int {
+	err := ioutil.WriteFile("data_use/pad.txt", []byte(""), 0644)
+	if err != nil {
+		fmt.Println("eror:", err)
+		return 0
+	}
+
+	err = ioutil.WriteFile("data_use/pad.txt", []byte(text), 0644)
+	if err != nil {
+		fmt.Println("eror:", err)
+		return 0
+	}
+
+	cmd := exec.Command("cmd", "/C", "start", "data_use/pad.txt")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+
+	err = cmd.Start()
+	if err != nil {
+		fmt.Println("error:", err)
+	} else {
+		fmt.Println("good")
+	}
+
+	return 1
 }

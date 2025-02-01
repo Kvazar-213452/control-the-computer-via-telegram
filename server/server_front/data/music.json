@@ -1,3 +1,11 @@
 {
-  "3": "http://localhost:3000/file/3.mp3"
+  "1": "http://localhost:3000/file/duck-toy-sound.mp3",
+  "2": "http://localhost:3000/file/error_CDOxCYm.mp3",
+  "3": "http://localhost:3000/file/fartmeme.mp3",
+  "4": "http://localhost:3000/file/french-meme-song.mp3",
+  "5": "http://localhost:3000/file/miguel-oharris-spider-man-2099.mp3",
+  "6": "http://localhost:3000/file/movie_1_C2K5NH0.mp3",
+  "7": "http://localhost:3000/file/pomehi-rezkiy-korotkiy.mp3",
+  "8": "http://localhost:3000/file/shocked-sound-effect.mp3",
+  "9": "http://localhost:3000/file/tutututu-mem-demotivator.mp3"
 }

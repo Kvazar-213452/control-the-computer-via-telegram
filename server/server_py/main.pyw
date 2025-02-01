@@ -68,5 +68,11 @@ def index_4():
 
     return jsonify({'message': 'good'})
 
+@app.route('/close', methods=['POST'])
+def index_5():
+    pyautogui.hotkey('alt', 'f4')
+
+    return jsonify({'message': 'good'})
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4444)
