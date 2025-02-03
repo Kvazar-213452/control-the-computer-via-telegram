@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPX</title>
+    <link rel="stylesheet" href="public/main.css">
+</head>
+<body>
+    <div class="main">
+        <h2>Kvazar-213452</h2>
+        <br>
+        <a href="index.html">Index page</a>
+        <br>
+        <br>
+        <div id="commands-container"></div>
+    </div>
+    
+    <script>
+        const commands = [
+            { name: "#help", desc: "полезна команда" },
+            { name: "#off", desc: "вирубає бота" },
+            { name: "#sound", desc: "міняє силу звука на pc діапазон [0 | 100]" },
+            { name: "#mouse", desc: "зміна скорості мишки діапазон [0 | 100] хз" },
+            { name: "#screen", desc: "сила світла на pc я неєбу" },
+            { name: "#music", desc: "врубає музику типу #music 1" },
+            { name: "#sleep", desc: "соний режим pc" },
+            { name: "#shutdown", desc: "вирубає pc" },
+            { name: "#reboot", desc: "перезавантажує pc" },
+            { name: "#key", desc: "пишиш key і сука якйого там  блять клавішу і сочитанія" },
+            { name: "#text", desc: "пишиш текст і агрумент типу #text хуй і олучиться хуй" },
+            { name: "#foto", desc: "биреш #foto і пишеш індекс і заєбісь хуйня" },
+            { name: "#bot1", desc: "соний режим бота" },
+            { name: "#bot0", desc: "активований бот" },
+            { name: "#updata", desc: "оновлює дані бота з сервера" },
+            { name: "#data_foto", desc: "виводить дані json foto" },
+            { name: "#data_music", desc: "виводить дані json music" },
+            { name: "#restart", desc: "перезапуск" },
+            { name: "#info", desc: "інформація про локального бота" },
+            { name: "#ping", desc: "перевірки роботи бота" },
+            { name: "#close", desc: "закрити вікно" },
+            { name: "#pad", desc: "написати текст і виввести його в блокнот" }
+        ];
+        
+        const container = document.getElementById("commands-container");
+
+        commands.forEach(cmd => {
+            const div = document.createElement("div");
+            div.classList.add("div_d");
+            div.innerHTML = `
+                <div class="paddding">
+                    <h3>${cmd.name}</h3>
+                    <p>${cmd.desc}</p>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    </script>
+</body>
+</html>
