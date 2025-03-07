@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPX</title>
+  <link rel="stylesheet" href="asets/main.css">
+</head>
+<body>
+  <div class="main">
+    <h2>Kvazar-213452</h2>
+    <br>
+    <h3>Dwonload msuic</h3>
+    <div>
+      <label for="text">Enter index for music:</label>
+      <input type="text" id="text_music" name="text" required>
+      <br><br>
+      <label for="file_music" class="custom-file-upload">
+        Select a music file
+      </label>
+      <input type="file" id="file_music" name="file" required>
+      
+      <br><br>
+      <button class="ss2" type="button" onclick="upload_music()">Download music</button>
+    </div>
+    <br>
+    <h3>Dwonload foto</h3>
+    <div>
+      <label for="text">Enter index for foto:</label>
+      <input type="text" id="text_foto" name="text" required>
+      <br><br>
+      <label for="file_foto" class="custom-file-upload">
+        Select a foto file
+      </label>
+      <input type="file" id="file_foto" name="file" required>
+      <br><br>
+      <button class="ss2" type="button" onclick="upload_foto()">Download foto</button>
+    </div>
+    <br><br>
+    <h3 class="ttw">Data msuic</h3>
+    <div class="data" id="data_music"></div>
+    <h3 class="ttw">Data foto</h3>
+    <div class="data" id="data_foto"></div>
+    <br><br><br>
+    <!-- console -->
+    <div class="console"></div>
+    <br>
+  </div>
+</body>
+  <script src="asets/jquery.min.js"></script>
+  <script src="asets/main.js"></script>
+
+  <script>
+    get_data();
+  </script>
+</html>
