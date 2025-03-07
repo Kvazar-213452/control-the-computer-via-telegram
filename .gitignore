@@ -1,4 +1,2 @@
-data/data.unix
-server/server_front/node_modules/
-server/server_py/build/
-server/server_py/dist/
+/build/
+/dist/
