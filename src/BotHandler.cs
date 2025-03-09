@@ -15,7 +15,6 @@ namespace MyTelegramBot {
             if (e.Message.Text != null) {
                 Console.WriteLine($"Received a message from {e.Message.From.Username}: {e.Message.Text}");
 
-                // Перевірка на команду #help
                 if (e.Message.Text.StartsWith("#help")) {
                     await botClient.SendTextMessageAsync(e.Message.Chat.Id, "Here is the list of commands:\n#help - Shows this help message\n...");
                 } else {

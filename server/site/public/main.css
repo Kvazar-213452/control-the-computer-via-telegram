@@ -1,0 +1,121 @@
+:root {
+    --bg_1: #22222e;
+    --bg_2: #181822;
+    --bg_3: #252831;
+    --bg_4: #2d2d3d;
+    --bg_5: #595959;
+    --bg_1: #22222e;
+
+    --main_color: #68ff9d;
+}
+
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('./Minecraft_1.1.ttf') format('truetype');
+}
+
+a {
+    color: var(--main_color);
+    
+}
+
+body {
+    background-color: var(--bg_2);
+    font-family: 'MyCustomFont', sans-serif;
+    color: white;
+}
+
+* {
+    font-family: 'MyCustomFont';
+    margin: 0;
+    padding: 0;
+    font-weight: normal !important;
+}
+
+.main {padding: 20px;}
+h2 {color: var(--main_color);}
+
+input {
+    background-color: var(--bg_1);
+    padding: 4px;
+    border: none;
+    font-size: 12px;
+    color: white;
+    width: 50px;
+}
+
+input:active {color: var(--main_color);}
+label {font-size: 13px;}
+#file_music,
+#file_foto {display: none;}
+
+.custom-file-upload {
+    background-color: var(--bg_1);
+    color: var(--main_color);
+    padding: 7px;
+    font-size: 14px;
+}
+
+.ss2 {
+    position: relative;
+    border: none;
+    padding: 6px;
+    font-size: 13px;
+    color: white;
+    cursor: pointer;
+    background-color: var(--bg_1);
+}
+
+.console {
+    background-color: var(--bg_1);
+    padding: 10px;
+    font-size: 15px;
+}
+
+.console p {
+    position: relative;
+    margin-bottom: 10px;
+    color: var(--main_color);
+}
+
+.data {
+    position: relative;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: var(--bg_1);
+}
+
+.item {
+    position: relative;
+    margin-bottom: 10px;
+    width: 90%;
+    padding: 7px;
+    font-size: 14px;
+    color: var(--main_color);
+    background-color: var(--bg_2);
+    white-space: nowrap;
+    overflow: auto;
+}
+
+.item span {color: white;}
+.ttw {margin-bottom: 5px;}
+
+.item p {
+    position: relative;
+    float: left;
+    color: #fd4b4b;
+    margin-right: 5px;
+}
+
+.div_d {
+    background-color: var(--bg_1);
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.main {padding: 20px;}
+.paddding {padding: 10px;}
+.paddding h3 {color: var(--main_color);}
+.paddding p {font-size: 15px;}
+h2 {color: var(--main_color);}
+
