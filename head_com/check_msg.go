@@ -19,10 +19,7 @@ type VolumeRequest struct {
 var let_start = 0
 
 func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
-	if msg == "#ping" {
-		bot.Send(tgbotapi.NewMessage(chatID, "pong"))
-		return 1
-	} else if msg == "#bot1" {
+	if msg == "#bot1" {
 		let_start = 1
 		bot.Send(tgbotapi.NewMessage(chatID, "set_1 unix"))
 		return 1
@@ -172,62 +169,6 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 			bot.Send(tgbotapi.NewMessage(chatID, "updata error"))
 			return 0
 		}
-	} else if msg == "#data_foto" {
-		data, err := os.ReadFile("data/foto.json")
-		if err != nil {
-			bot.Send(tgbotapi.NewMessage(chatID, "error"))
-		}
-
-		bot.Send(tgbotapi.NewMessage(chatID, string(data)))
-		return 1
-	} else if msg == "#data_music" {
-		data, err := os.ReadFile("data/music.json")
-		if err != nil {
-			bot.Send(tgbotapi.NewMessage(chatID, "error"))
-		}
-
-		bot.Send(tgbotapi.NewMessage(chatID, string(data)))
-		return 1
-	} else if msg == "#info" {
-		data, err := os.ReadFile("data/info.unix")
-		if err != nil {
-			bot.Send(tgbotapi.NewMessage(chatID, "error"))
-		}
-
-		bot.Send(tgbotapi.NewMessage(chatID, string(data)))
-		return 1
-	} else if msg == "#restart" {
-		bot.Send(tgbotapi.NewMessage(chatID, "restart"))
-
-		Restart()
-
-		return 1
-	} else if strings.HasPrefix(msg, "#pad") {
-		parts := strings.Fields(msg)
-
-		if len(parts) > 1 {
-			text := strings.Join(parts[1:], " ")
-
-			val := func_unix.Pad_text(text)
-
-			if val == 1 {
-				bot.Send(tgbotapi.NewMessage(chatID, "good"))
-
-				return 1
-			} else {
-				bot.Send(tgbotapi.NewMessage(chatID, "not good"))
-
-				return 0
-			}
-		} else {
-			bot.Send(tgbotapi.NewMessage(chatID, "de text?"))
-			return 1
-		}
-	} else if msg == "#close" {
-		func_unix.Post_close()
-
-		bot.Send(tgbotapi.NewMessage(chatID, "close"))
-		return 1
 	}
 
 	return 0
