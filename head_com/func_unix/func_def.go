@@ -3,6 +3,7 @@ package func_unix
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"syscall"
@@ -140,4 +141,58 @@ func Disable_WiFi() error {
 		return fmt.Errorf("error Wi-Fi: %v", err)
 	}
 	return nil
+}
+
+// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal
+// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal
+// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal
+
+func Post_sound(volume float64, chatID int64, bot *tgbotapi.BotAPI) {
+
+}
+
+func Post_key_unix(volume string, chatID int64, bot *tgbotapi.BotAPI) {
+
+}
+
+func Speench_text(text string, chatID int64, bot *tgbotapi.BotAPI) {
+	cmd := exec.Command("./main.exe", text)
+
+	cmd.Dir = "./lib"
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	} else {
+		fmt.Println("good")
+	}
+
+	f, err := os.Open("./lib/output.mp3")
+	if err != nil {
+		log.Fatalf("error: %v", err)
+		return
+	}
+	defer f.Close()
+
+	streamer, format, err := mp3.Decode(f)
+	if err != nil {
+		bot.Send(tgbotapi.NewMessage(chatID, "invalib MP3"))
+		return
+	}
+	defer streamer.Close()
+
+	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	if err != nil {
+		bot.Send(tgbotapi.NewMessage(chatID, "error sound"))
+		return
+	}
+
+	speaker.Play(streamer)
+
+	bot.Send(tgbotapi.NewMessage(chatID, "play text"))
+
+	select {}
 }

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"head/head_com/func_unix"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -30,10 +29,7 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 	} else if let_start == 1 {
 		return 1
 	} else if msg == "#help" {
-		text, err := Read_file("data/help.unix")
-		if err != nil {
-			log.Fatalf("error %v", err)
-		}
+		text, _ := Read_file("data/help.unix")
 
 		bot.Send(tgbotapi.NewMessage(chatID, text))
 		return 1
@@ -54,43 +50,11 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 				return 1
 			}
 
-			func_unix.Post_sound(volume, chatID, bot)
+			// fwefewfwfwefwfe
 
 			bot.Send(tgbotapi.NewMessage(chatID, "change sound "+strconv.FormatFloat(volume, 'f', 0, 64)+"%"))
 		} else {
 			bot.Send(tgbotapi.NewMessage(chatID, "format command #sound <value> (0-100)."))
-		}
-		return 1
-	} else if strings.HasPrefix(msg, "#mouse") {
-		parts := strings.Fields(msg)
-		if len(parts) == 2 {
-			volume, err := strconv.ParseFloat(parts[1], 64)
-			if err != nil || volume < 0 || volume > 100 {
-				bot.Send(tgbotapi.NewMessage(chatID, "diapazon (0-100)."))
-				return 1
-			}
-
-			func_unix.Post_set_mouse_speed(volume, chatID, bot)
-
-			bot.Send(tgbotapi.NewMessage(chatID, "change mouse "+strconv.FormatFloat(volume, 'f', 0, 64)+"%"))
-		} else {
-			bot.Send(tgbotapi.NewMessage(chatID, "format command #mouse <value> (0-100)."))
-		}
-		return 1
-	} else if strings.HasPrefix(msg, "#screen") {
-		parts := strings.Fields(msg)
-		if len(parts) == 2 {
-			volume, err := strconv.ParseFloat(parts[1], 64)
-			if err != nil || volume < 0 || volume > 100 {
-				bot.Send(tgbotapi.NewMessage(chatID, "diapazon (0-100)."))
-				return 1
-			}
-
-			func_unix.Post_change_screen_brightness(volume, chatID, bot)
-
-			bot.Send(tgbotapi.NewMessage(chatID, "change screen "+strconv.FormatFloat(volume, 'f', 0, 64)+"%"))
-		} else {
-			bot.Send(tgbotapi.NewMessage(chatID, "format command #screen <value> (0-100)."))
 		}
 		return 1
 	} else if strings.HasPrefix(msg, "#music") {
@@ -138,7 +102,7 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 		if len(parts) > 1 {
 			text := strings.Join(parts[1:], " ")
 
-			go func_unix.Post_speench_text(text, chatID, bot)
+			func_unix.Speench_text(text, chatID, bot)
 
 			bot.Send(tgbotapi.NewMessage(chatID, "start speech "+text))
 
@@ -159,16 +123,6 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 
 		bot.Send(tgbotapi.NewMessage(chatID, "start foto"))
 		return 1
-	} else if msg == "#updata" {
-		let_ := func_unix.Updata_all()
-
-		if let_ == 1 {
-			bot.Send(tgbotapi.NewMessage(chatID, "updata"))
-			return 1
-		} else {
-			bot.Send(tgbotapi.NewMessage(chatID, "updata error"))
-			return 0
-		}
 	}
 
 	return 0

@@ -3,29 +3,19 @@ package main
 import (
 	"fmt"
 	"head/head_com"
-	"head/head_com/config"
-	"head/head_com/shell"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/joho/godotenv"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 func main() {
-	token, err := head_com.Read_file("data/data.unix")
-	if err != nil {
-		log.Fatalf("error %v", err)
-	}
-
-	go func() {
-		http.HandleFunc("/upload_mp3", shell.Upload_MP3)
-		if err := http.ListenAndServe(config.Port, nil); err != nil {
-			fmt.Println("error", err)
-		}
-	}()
+	godotenv.Load(".env")
+	token := os.Getenv("TOKEN")
 
 	go func() {
 		bot, err := tgbotapi.NewBotAPI(token)
@@ -34,7 +24,7 @@ func main() {
 		}
 
 		// Debug
-		bot.Debug = true
+		bot.Debug = false
 
 		log.Printf("active on %s", bot.Self.UserName)
 
