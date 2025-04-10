@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-// Функція для перетворення символу на код клавіші
 WORD GetKeyCode(const char* key) {
     if (strcmp(key, "a") == 0) return 0x41; // 'A'
     if (strcmp(key, "b") == 0) return 0x42; // 'B'

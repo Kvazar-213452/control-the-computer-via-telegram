@@ -1,8 +1,6 @@
 package head_com
 
 import (
-	"encoding/json"
-	"fmt"
 	"head/head_com/func_unix"
 	"os"
 	"strconv"
@@ -50,11 +48,27 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 				return 1
 			}
 
-			// fwefewfwfwefwfe
+			func_unix.Sound(volume)
 
 			bot.Send(tgbotapi.NewMessage(chatID, "change sound "+strconv.FormatFloat(volume, 'f', 0, 64)+"%"))
 		} else {
 			bot.Send(tgbotapi.NewMessage(chatID, "format command #sound <value> (0-100)."))
+		}
+		return 1
+	} else if strings.HasPrefix(msg, "#mouse") {
+		parts := strings.Fields(msg)
+		if len(parts) == 2 {
+			volume, err := strconv.ParseFloat(parts[1], 64)
+			if err != nil || volume < 0 || volume > 100 {
+				bot.Send(tgbotapi.NewMessage(chatID, "diapazon (0-100)."))
+				return 1
+			}
+
+			func_unix.Mouse(volume)
+
+			bot.Send(tgbotapi.NewMessage(chatID, "change mouse "+strconv.FormatFloat(volume, 'f', 0, 64)+"%"))
+		} else {
+			bot.Send(tgbotapi.NewMessage(chatID, "format command #mouse <value> (0-100)."))
 		}
 		return 1
 	} else if strings.HasPrefix(msg, "#music") {
@@ -83,16 +97,9 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 		return 1
 	} else if strings.HasPrefix(msg, "#key") {
 		parts := strings.Fields(msg)
+		text := strings.Join(parts[1:], " ")
 
-		args := parts[1:]
-
-		argsJSON, err := json.Marshal(args)
-		if err != nil {
-			fmt.Println("Error marshalling to JSON:", err)
-			return 1
-		}
-
-		func_unix.Post_key_unix(string(argsJSON), chatID, bot)
+		func_unix.Key_unix(text)
 
 		bot.Send(tgbotapi.NewMessage(chatID, "start key"))
 		return 1
@@ -113,11 +120,7 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 		}
 	} else if strings.HasPrefix(msg, "#foto") {
 		parts := strings.Fields(msg)
-		volume, err := strconv.ParseFloat(parts[1], 64)
-		if err != nil || volume < 0 || volume > 100 {
-			bot.Send(tgbotapi.NewMessage(chatID, "diapazon (0-100)."))
-			return 0
-		}
+		volume, _ := strconv.ParseFloat(parts[1], 64)
 
 		func_unix.Open_foto(int(volume), chatID, bot)
 

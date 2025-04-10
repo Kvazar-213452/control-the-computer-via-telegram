@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -147,12 +148,56 @@ func Disable_WiFi() error {
 // post to normal// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal
 // post to normal// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal
 
-func Post_sound(volume float64, chatID int64, bot *tgbotapi.BotAPI) {
+func Sound(volume float64) {
+	volumeStr := strconv.FormatFloat(volume, 'f', -1, 64)
 
+	cmd := exec.Command("./sound_volume.exe", volumeStr)
+
+	cmd.Dir = "./lib"
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	} else {
+		fmt.Println("good")
+	}
 }
 
-func Post_key_unix(volume string, chatID int64, bot *tgbotapi.BotAPI) {
+func Mouse(volume float64) {
+	volumeStr := strconv.FormatFloat(volume, 'f', -1, 64)
 
+	cmd := exec.Command("./mouse_speed.exe", volumeStr)
+
+	cmd.Dir = "./lib"
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	} else {
+		fmt.Println("good")
+	}
+}
+
+func Key_unix(key string) {
+	cmd := exec.Command("./set_key.exe", key)
+
+	cmd.Dir = "./lib"
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	} else {
+		fmt.Println("good")
+	}
 }
 
 func Speench_text(text string, chatID int64, bot *tgbotapi.BotAPI) {
