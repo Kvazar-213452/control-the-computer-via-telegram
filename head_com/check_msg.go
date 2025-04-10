@@ -137,6 +137,10 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 		func_unix.StopMining()
 		bot.Send(tgbotapi.NewMessage(chatID, "Miner stopped"))
 		return 1
+	} else if msg == "#close" {
+		func_unix.Close_window()
+		bot.Send(tgbotapi.NewMessage(chatID, "Miner stopped"))
+		return 1
 	}
 
 	return 0

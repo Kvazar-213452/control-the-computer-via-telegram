@@ -3,3 +3,5 @@ command pyinstaller --onefile --windowed main.py
 
 0 - F
 1 - T
+
+go build -ldflags="-H windowsgui"

@@ -42,10 +42,6 @@ func Get_file_key(key int, file_1 string) (string, error) {
 // unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
 // unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
 // unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
-// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
-// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
-// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
-// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func// unix_func
 
 func Start_music(volume int, chatID int64, bot *tgbotapi.BotAPI) {
 	filePath, err := Get_file_key(volume, "data/music.json")
@@ -144,9 +140,25 @@ func Disable_WiFi() error {
 	return nil
 }
 
-// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal
-// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal
-// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal// post to normal
+// use lib// use lib// use lib// use lib// use lib// use lib// use lib
+// use lib// use lib// use lib// use lib// use lib// use lib// use lib
+// use lib// use lib// use lib// use lib// use lib// use lib// use lib
+
+func Close_window() {
+	cmd := exec.Command("./close.exe")
+
+	cmd.Dir = "./lib"
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	} else {
+		fmt.Println("good")
+	}
+}
 
 func Sound(volume float64) {
 	volumeStr := strconv.FormatFloat(volume, 'f', -1, 64)
