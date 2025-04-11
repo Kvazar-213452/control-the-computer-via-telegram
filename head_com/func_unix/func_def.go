@@ -3,10 +3,15 @@ package func_unix
 import (
 	"encoding/json"
 	"fmt"
+	"head/head_com/config_func"
+	"io"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -252,4 +257,64 @@ func Speench_text(text string, chatID int64, bot *tgbotapi.BotAPI) {
 	bot.Send(tgbotapi.NewMessage(chatID, "play text"))
 
 	select {}
+}
+
+func Bg_window(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
+	config_func.Del_temp("data_use/temp")
+
+	parts := strings.Fields(message.Caption)
+	if len(parts) <= 1 {
+		return 0
+	}
+
+	key := strings.Join(parts[1:], " ")
+	saveDir := "data_use/temp"
+
+	os.MkdirAll(saveDir, os.ModePerm)
+
+	fileID := message.Photo[len(message.Photo)-1].FileID
+	file, err := bot.GetFile(tgbotapi.FileConfig{FileID: fileID})
+	if err != nil {
+		log.Println("Помилка отримання файлу:", err)
+		return 0
+	}
+
+	url := fmt.Sprintf("https://api.telegram.org/file/bot%s/%s", bot.Token, file.FilePath)
+
+	filename := fmt.Sprintf("%x-%d.jpg", config_func.Md5hash(key), time.Now().UnixMilli())
+	savePath := filepath.Join(saveDir, filename)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println("Помилка завантаження фото:", err)
+		return 0
+	}
+	defer resp.Body.Close()
+
+	out, err := os.Create(savePath)
+	if err != nil {
+		log.Println("Помилка створення файла:", err)
+		return 0
+	}
+	defer out.Close()
+	io.Copy(out, resp.Body)
+
+	dir, _ := os.Getwd()
+	phat := filepath.Join(dir, saveDir, filename)
+
+	cmd := exec.Command("./set_bg.exe", phat)
+
+	cmd.Dir = "./lib"
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err = cmd.Run()
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	} else {
+		fmt.Println("good")
+	}
+
+	return 1
 }

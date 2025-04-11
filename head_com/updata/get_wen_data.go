@@ -1,10 +1,9 @@
 package updata
 
 import (
-	"crypto/md5"
 	"encoding/json"
 	"fmt"
-	"hash"
+	"head/head_com/config_func"
 	"io"
 	"log"
 	"net/http"
@@ -37,7 +36,7 @@ func Up_foto(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 
 	url := fmt.Sprintf("https://api.telegram.org/file/bot%s/%s", bot.Token, file.FilePath)
 
-	filename := fmt.Sprintf("%x-%d.jpg", md5hash(key), time.Now().UnixMilli())
+	filename := fmt.Sprintf("%x-%d.jpg", config_func.Md5hash(key), time.Now().UnixMilli())
 	savePath := filepath.Join(saveDir, filename)
 
 	resp, err := http.Get(url)
@@ -71,26 +70,6 @@ func Up_foto(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 	}
 
 	return 1
-}
-
-func md5hash(text string) []byte {
-	h := md5Sum()
-	h.Write([]byte(text))
-	return h.Sum(nil)
-}
-
-func md5Sum() hash.Hash {
-	hash, _ := hashFromString("md5")
-	return hash
-}
-
-func hashFromString(algo string) (hash.Hash, error) {
-	switch strings.ToLower(algo) {
-	case "md5":
-		return md5.New(), nil
-	default:
-		return nil, fmt.Errorf("невідомий алгоритм хешування: %s", algo)
-	}
 }
 
 func readJSON(path string, out *map[string]string) error {
@@ -134,7 +113,7 @@ func Up_music(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 	}
 	url := fmt.Sprintf("https://api.telegram.org/file/bot%s/%s", bot.Token, fileInfo.FilePath)
 
-	filename := fmt.Sprintf("%x-%d.mp3", md5hash(key), time.Now().UnixMilli())
+	filename := fmt.Sprintf("%x-%d.mp3", config_func.Md5hash(key), time.Now().UnixMilli())
 	savePath := filepath.Join(saveDir, filename)
 
 	resp, err := http.Get(url)

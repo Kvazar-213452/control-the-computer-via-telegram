@@ -1,6 +1,7 @@
 package head_com
 
 import (
+	"fmt"
 	"head/head_com/func_unix"
 	"head/head_com/updata"
 	"os"
@@ -12,6 +13,14 @@ import (
 
 type VolumeRequest struct {
 	Volume float64 `json:"volume"`
+}
+
+func Read_file(filename string) (string, error) {
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return "", fmt.Errorf("error %s: %v", filename, err)
+	}
+	return string(data), nil
 }
 
 var let_start = 0
@@ -174,6 +183,27 @@ func Check_msg_user(bot *tgbotapi.BotAPI, chatID int64, message *tgbotapi.Messag
 			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "error"))
 			return 0
 		}
+	} else if msg == "#data_foto" {
+		text, _ := Read_file("data/foto.json")
+
+		bot.Send(tgbotapi.NewMessage(chatID, text))
+		return 1
+	} else if msg == "#data_music" {
+		text, _ := Read_file("data/music.json")
+
+		bot.Send(tgbotapi.NewMessage(chatID, text))
+		return 1
+	} else if msg == "#data_log" {
+		text, _ := Read_file("data/log.txt")
+
+		bot.Send(tgbotapi.NewMessage(chatID, text))
+		return 1
+	} else if strings.HasPrefix(message.Caption, "#bg") {
+		fmt.Print("Dddd")
+		func_unix.Bg_window(bot, message)
+
+		bot.Send(tgbotapi.NewMessage(chatID, "text"))
+		return 1
 	}
 
 	return 0
