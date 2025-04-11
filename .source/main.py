@@ -5,9 +5,9 @@ def text_to_speech_ukraine(text, output_file='output.mp3'):
     try:
         tts = gTTS(text=text, lang='uk', slow=False)
         tts.save(output_file)
-        print(f"Файл збережено: {output_file}")
+        print(f"file save: {output_file}")
     except Exception as e:
-        print(f"Сталася помилка: {e}")
+        print(f"error: {e}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Перетворення тексту в мовлення.")
