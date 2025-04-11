@@ -260,8 +260,6 @@ func Speench_text(text string, chatID int64, bot *tgbotapi.BotAPI) {
 }
 
 func Bg_window(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
-	config_func.Del_temp("data_use/temp")
-
 	parts := strings.Fields(message.Caption)
 	if len(parts) <= 1 {
 		return 0

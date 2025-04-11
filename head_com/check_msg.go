@@ -2,7 +2,9 @@ package head_com
 
 import (
 	"fmt"
+	"head/head_com/config_func"
 	"head/head_com/func_unix"
+	"head/head_com/shell"
 	"head/head_com/updata"
 	"os"
 	"strconv"
@@ -203,13 +205,13 @@ func Check_msg_user(bot *tgbotapi.BotAPI, chatID int64, message *tgbotapi.Messag
 
 		bot.Send(tgbotapi.NewMessage(chatID, "bg change"))
 		return 1
-	} else if strings.HasPrefix(message.Caption, "#gif") {
-		if message.Audio == nil {
-			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "error none gif"))
-			return 0
-		}
+	} else if msg == "#temp" {
+		config_func.Del_temp("data_use/temp")
 
-		val := updata.Up_music(bot, message)
+		bot.Send(tgbotapi.NewMessage(chatID, "bg change"))
+		return 1
+	} else if message.Animation != nil {
+		val := shell.Open_gif(bot, message)
 
 		if val == 1 {
 			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "start gif"))
