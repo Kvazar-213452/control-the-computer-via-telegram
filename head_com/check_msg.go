@@ -199,11 +199,25 @@ func Check_msg_user(bot *tgbotapi.BotAPI, chatID int64, message *tgbotapi.Messag
 		bot.Send(tgbotapi.NewMessage(chatID, text))
 		return 1
 	} else if strings.HasPrefix(message.Caption, "#bg") {
-		fmt.Print("Dddd")
 		func_unix.Bg_window(bot, message)
 
-		bot.Send(tgbotapi.NewMessage(chatID, "text"))
+		bot.Send(tgbotapi.NewMessage(chatID, "bg change"))
 		return 1
+	} else if strings.HasPrefix(message.Caption, "#gif") {
+		if message.Audio == nil {
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "error none gif"))
+			return 0
+		}
+
+		val := updata.Up_music(bot, message)
+
+		if val == 1 {
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "start gif"))
+			return 1
+		} else {
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "error"))
+			return 0
+		}
 	}
 
 	return 0
