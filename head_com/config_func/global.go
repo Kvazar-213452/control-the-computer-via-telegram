@@ -26,7 +26,7 @@ func hashFromString(algo string) (hash.Hash, error) {
 	case "md5":
 		return md5.New(), nil
 	default:
-		return nil, fmt.Errorf("невідомий алгоритм хешування: %s", algo)
+		return nil, fmt.Errorf("error not have algorutm: %s", algo)
 	}
 }
 

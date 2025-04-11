@@ -3,8 +3,8 @@ package shell
 import (
 	"encoding/base64"
 	"fmt"
+	"head/head_com/config_func"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -19,13 +19,13 @@ func Open_gif(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 	if message.Animation != nil {
 		fileID = message.Animation.FileID
 	} else {
-		log.Println("Помилка: анімація не знайдена")
+		config_func.Log_append("gif none")
 		return 0
 	}
 
 	fileInfo, err := bot.GetFile(tgbotapi.FileConfig{FileID: fileID})
 	if err != nil {
-		log.Println("Помилка отримання файлу:", err)
+		config_func.Log_append("fiel gif none")
 		return 0
 	}
 
@@ -33,14 +33,14 @@ func Open_gif(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Println("Помилка завантаження файлу:", err)
+		config_func.Log_append("error dwn gif")
 		return 0
 	}
 	defer resp.Body.Close()
 
 	videoData, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Println("Помилка читання тіла відповіді:", err)
+		config_func.Log_append("error")
 		return 0
 	}
 
@@ -49,7 +49,7 @@ func Open_gif(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 	dataPath := "./lib/shell/data.temp"
 	err = os.WriteFile(dataPath, []byte(encoded), 0644)
 	if err != nil {
-		log.Fatalln("Не вдалося записати base64 у файл:", err)
+		config_func.Log_append("base64 gif error")
 	}
 
 	cmd := exec.Command("./shell_web.exe", "unix", "500", "500")
@@ -65,9 +65,9 @@ func Open_gif(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 
 		err := cmd.Run()
 		if err != nil {
-			fmt.Printf("Помилка при виконанні процесу: %v\n", err)
+			config_func.Log_append("error gif")
 		} else {
-			fmt.Println("Процес завершено успішно.")
+			config_func.Log_append("end work gif")
 		}
 	}()
 
@@ -76,9 +76,9 @@ func Open_gif(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 		if cmd.Process != nil {
 			err := cmd.Process.Kill()
 			if err != nil {
-				log.Printf("Помилка при завершенні процесу: %v\n", err)
+				config_func.Log_append("error end gif")
 			} else {
-				log.Println("Процес завершено після 5 секунд.")
+				config_func.Log_append("end 5s gif")
 			}
 		}
 	}()

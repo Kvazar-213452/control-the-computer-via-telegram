@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"head/head_com/config_func"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -51,7 +50,7 @@ func Get_file_key(key int, file_1 string) (string, error) {
 func Start_music(volume int, chatID int64, bot *tgbotapi.BotAPI) {
 	filePath, err := Get_file_key(volume, "data/music.json")
 	if err != nil {
-		fmt.Println("error:", err)
+		config_func.Log_append("errro start music")
 		return
 	}
 
@@ -83,16 +82,16 @@ func Start_music(volume int, chatID int64, bot *tgbotapi.BotAPI) {
 func Open_foto(volume int, chatID int64, bot *tgbotapi.BotAPI) {
 	filePath, err := Get_file_key(volume, "data/foto.json")
 	if err != nil {
-		fmt.Println("error:", err)
+		config_func.Log_append("errro open foto")
 		return
 	}
 
 	_, err = os.Stat(filePath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			fmt.Println("error")
+			config_func.Log_append("errro open foto")
 		} else {
-			fmt.Println("error:", err)
+			config_func.Log_append("errro open foto")
 		}
 		return
 	}
@@ -102,7 +101,7 @@ func Open_foto(volume int, chatID int64, bot *tgbotapi.BotAPI) {
 
 	err = cmd.Start()
 	if err != nil {
-		fmt.Println("error:", err)
+		config_func.Log_append("errro open foto")
 	} else {
 		fmt.Println("good")
 	}
@@ -116,7 +115,7 @@ func Sleep_pc() {
 	cmd := exec.Command("rundll32.exe", "powrprof.dll,SetSuspendState", "Sleep")
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Error putting system to sleep:", err)
+		config_func.Log_append("Error putting system to sleep")
 	}
 }
 
@@ -124,7 +123,7 @@ func Shutdown_pc() {
 	cmd := exec.Command("shutdown", "/s", "/t", "1")
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Error shutting down the system:", err)
+		config_func.Log_append("Error shutting down the system")
 	}
 }
 
@@ -132,17 +131,8 @@ func Reboot_pc() {
 	cmd := exec.Command("shutdown", "/r", "/t", "1")
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Error rebooting the system:", err)
+		config_func.Log_append("Error rebooting the system")
 	}
-}
-
-func Disable_WiFi() error {
-	cmd := exec.Command("netsh", "interface", "set", "interface", "Wi-Fi", "disabled")
-	err := cmd.Run()
-	if err != nil {
-		return fmt.Errorf("error Wi-Fi: %v", err)
-	}
-	return nil
 }
 
 // use lib// use lib// use lib// use lib// use lib// use lib// use lib
@@ -159,9 +149,9 @@ func Close_window() {
 
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		config_func.Log_append("Error clone window")
 	} else {
-		fmt.Println("good")
+		config_func.Log_append("close window")
 	}
 }
 
@@ -177,9 +167,9 @@ func Sound(volume float64) {
 
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		config_func.Log_append("Error sound")
 	} else {
-		fmt.Println("good")
+		config_func.Log_append("good sound change")
 	}
 }
 
@@ -195,9 +185,9 @@ func Mouse(volume float64) {
 
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		config_func.Log_append("Error mouse spead")
 	} else {
-		fmt.Println("good")
+		config_func.Log_append("mouse spead change")
 	}
 }
 
@@ -211,9 +201,9 @@ func Key_unix(key string) {
 
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		config_func.Log_append("error key")
 	} else {
-		fmt.Println("good")
+		config_func.Log_append("key start")
 	}
 }
 
@@ -227,14 +217,14 @@ func Speench_text(text string, chatID int64, bot *tgbotapi.BotAPI) {
 
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		config_func.Log_append("srrro lib text")
 	} else {
-		fmt.Println("good")
+		config_func.Log_append("good text lib")
 	}
 
 	f, err := os.Open("./lib/output.mp3")
 	if err != nil {
-		log.Fatalf("error: %v", err)
+		config_func.Log_append("mp3 error")
 		return
 	}
 	defer f.Close()
@@ -273,7 +263,7 @@ func Bg_window(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 	fileID := message.Photo[len(message.Photo)-1].FileID
 	file, err := bot.GetFile(tgbotapi.FileConfig{FileID: fileID})
 	if err != nil {
-		log.Println("Помилка отримання файлу:", err)
+		config_func.Log_append("error get file for bg")
 		return 0
 	}
 
@@ -284,14 +274,14 @@ func Bg_window(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Println("Помилка завантаження фото:", err)
+		config_func.Log_append("error get bg")
 		return 0
 	}
 	defer resp.Body.Close()
 
 	out, err := os.Create(savePath)
 	if err != nil {
-		log.Println("Помилка створення файла:", err)
+		config_func.Log_append("error create file bg")
 		return 0
 	}
 	defer out.Close()
@@ -309,9 +299,9 @@ func Bg_window(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 
 	err = cmd.Run()
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		config_func.Log_append("lib error bg")
 	} else {
-		fmt.Println("good")
+		config_func.Log_append("lib good bg")
 	}
 
 	return 1
