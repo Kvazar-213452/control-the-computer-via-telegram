@@ -17,21 +17,17 @@ import (
 )
 
 func Up_foto(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
-	// Отримуємо ключ з caption
 	parts := strings.Fields(message.Caption)
 	if len(parts) <= 1 {
 		return 0
 	}
 	key := strings.Join(parts[1:], " ")
 
-	// Шляхи
 	jsonPath := "data/foto.json"
 	saveDir := "data_use/foto"
 
-	// Створення папки, якщо не існує
 	os.MkdirAll(saveDir, os.ModePerm)
 
-	// Завантажуємо фото
 	fileID := message.Photo[len(message.Photo)-1].FileID
 	file, err := bot.GetFile(tgbotapi.FileConfig{FileID: fileID})
 	if err != nil {
@@ -41,11 +37,9 @@ func Up_foto(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 
 	url := fmt.Sprintf("https://api.telegram.org/file/bot%s/%s", bot.Token, file.FilePath)
 
-	// Унікальне ім’я файла
 	filename := fmt.Sprintf("%x-%d.jpg", md5hash(key), time.Now().UnixMilli())
 	savePath := filepath.Join(saveDir, filename)
 
-	// Завантаження фото
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Println("Помилка завантаження фото:", err)
@@ -61,18 +55,15 @@ func Up_foto(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 	defer out.Close()
 	io.Copy(out, resp.Body)
 
-	// Читання/оновлення JSON
 	data := map[string]string{}
 	_ = readJSON(jsonPath, &data)
 
-	// Якщо ключ вже є — видаляємо старий файл
 	if oldPath, ok := data[key]; ok {
 		_ = os.Remove(oldPath)
 	}
 
 	data[key] = savePath
 
-	// Збереження JSON
 	err = writeJSON(jsonPath, data)
 	if err != nil {
 		log.Println("Помилка запису JSON:", err)
@@ -120,4 +111,62 @@ func writeJSON(path string, data map[string]string) error {
 		return err
 	}
 	return os.WriteFile(path, jsonData, 0644)
+}
+
+func Up_music(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
+	parts := strings.Fields(message.Caption)
+	if len(parts) <= 1 {
+		log.Println("Команда #up_music не має тексту після команди")
+		return 0
+	}
+	key := strings.Join(parts[1:], " ")
+
+	jsonPath := "data/music.json"
+	saveDir := "data_use/music"
+
+	os.MkdirAll(saveDir, os.ModePerm)
+
+	fileID := message.Audio.FileID
+	fileInfo, err := bot.GetFile(tgbotapi.FileConfig{FileID: fileID})
+	if err != nil {
+		log.Println("Помилка отримання файлу:", err)
+		return 0
+	}
+	url := fmt.Sprintf("https://api.telegram.org/file/bot%s/%s", bot.Token, fileInfo.FilePath)
+
+	filename := fmt.Sprintf("%x-%d.mp3", md5hash(key), time.Now().UnixMilli())
+	savePath := filepath.Join(saveDir, filename)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println("Помилка завантаження аудіо:", err)
+		return 0
+	}
+	defer resp.Body.Close()
+
+	out, err := os.Create(savePath)
+	if err != nil {
+		log.Println("Помилка створення файла:", err)
+		return 0
+	}
+	defer out.Close()
+	io.Copy(out, resp.Body)
+
+	data := map[string]string{}
+	readJSON(jsonPath, &data)
+
+	if oldPath, ok := data[key]; ok {
+		_ = os.Remove(oldPath)
+	}
+
+	data[key] = savePath
+	err = writeJSON(jsonPath, data)
+	if err != nil {
+		log.Println("Помилка запису JSON:", err)
+		return 0
+	}
+
+	fmt.Printf("%+v\n", message.Audio)
+
+	return 1
 }

@@ -153,10 +153,25 @@ func Check_msg_user(bot *tgbotapi.BotAPI, chatID int64, message *tgbotapi.Messag
 		val := updata.Up_foto(bot, message)
 
 		if val == 1 {
-			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "Фото оновлено"))
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "up foto"))
 			return 1
 		} else {
-			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "Помилка"))
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "error"))
+			return 0
+		}
+	} else if strings.HasPrefix(message.Caption, "#up_music") {
+		if message.Audio == nil {
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "error none music"))
+			return 0
+		}
+
+		val := updata.Up_music(bot, message)
+
+		if val == 1 {
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "up music"))
+			return 1
+		} else {
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "error"))
 			return 0
 		}
 	}
