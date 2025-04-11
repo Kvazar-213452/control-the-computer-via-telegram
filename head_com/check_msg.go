@@ -2,6 +2,7 @@ package head_com
 
 import (
 	"head/head_com/func_unix"
+	"head/head_com/updata"
 	"os"
 	"strconv"
 	"strings"
@@ -15,7 +16,9 @@ type VolumeRequest struct {
 
 var let_start = 0
 
-func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
+func Check_msg_user(bot *tgbotapi.BotAPI, chatID int64, message *tgbotapi.Message) int {
+	msg := message.Text
+
 	if msg == "#bot1" {
 		let_start = 1
 		bot.Send(tgbotapi.NewMessage(chatID, "set_1 unix"))
@@ -139,8 +142,23 @@ func Check_msg_user(msg string, bot *tgbotapi.BotAPI, chatID int64) int {
 		return 1
 	} else if msg == "#close" {
 		func_unix.Close_window()
-		bot.Send(tgbotapi.NewMessage(chatID, "Miner stopped"))
+		bot.Send(tgbotapi.NewMessage(chatID, "close"))
 		return 1
+	} else if strings.HasPrefix(message.Caption, "#up_foto") {
+		if len(message.Photo) == 0 {
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "error none foto"))
+			return 0
+		}
+
+		val := updata.Up_foto(bot, message)
+
+		if val == 1 {
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "Фото оновлено"))
+			return 1
+		} else {
+			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "Помилка"))
+			return 0
+		}
 	}
 
 	return 0

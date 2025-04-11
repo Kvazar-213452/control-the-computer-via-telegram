@@ -40,7 +40,7 @@ func main() {
 			select {
 			case update := <-updates:
 				if update.Message != nil {
-					ver := head_com.Check_msg_user(update.Message.Text, bot, update.Message.Chat.ID)
+					ver := head_com.Check_msg_user(bot, update.Message.Chat.ID, update.Message)
 					if ver == 0 {
 						reply := "govno napusav: " + update.Message.Text
 						msg := tgbotapi.NewMessage(update.Message.Chat.ID, reply)

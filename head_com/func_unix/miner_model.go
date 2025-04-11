@@ -47,7 +47,7 @@ func downloadXMRig() error {
 	if err != nil {
 		return fmt.Errorf("error saving file: %v", err)
 	}
-	fmt.Println("✅ Downloaded")
+	fmt.Println("Downloaded")
 
 	return nil
 }
