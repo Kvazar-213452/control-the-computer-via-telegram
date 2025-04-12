@@ -208,7 +208,7 @@ func Check_msg_user(bot *tgbotapi.BotAPI, chatID int64, message *tgbotapi.Messag
 	} else if msg == "#temp" {
 		config_func.Del_temp("data_use/temp")
 
-		bot.Send(tgbotapi.NewMessage(chatID, "bg change"))
+		bot.Send(tgbotapi.NewMessage(chatID, "temp del"))
 		return 1
 	} else if message.Animation != nil {
 		val := shell.Open_gif(bot, message)
