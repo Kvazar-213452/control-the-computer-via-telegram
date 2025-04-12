@@ -75,7 +75,7 @@ func Open_gif(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 		config_func.Log_append("base64 gif error")
 	}
 
-	cmd := exec.Command("./shell_web.exe", "unix", "500", "500")
+	cmd := exec.Command("./shell_web.exe", config_func.Name_shel, config_func.Size_x, config_func.Size_y)
 	cmd.Dir = "./lib/shell"
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -95,7 +95,7 @@ func Open_gif(bot *tgbotapi.BotAPI, message *tgbotapi.Message) int {
 	}()
 
 	go func() {
-		time.Sleep(5 * time.Second)
+		time.Sleep(time.Duration(config_func.Time_gif) * time.Second)
 		if cmd.Process != nil {
 			err := cmd.Process.Kill()
 			if err != nil {
