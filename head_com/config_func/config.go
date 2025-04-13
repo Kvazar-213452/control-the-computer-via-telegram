@@ -11,3 +11,7 @@ var Name_shel string = "213452"
 var Size_x string = "500"
 var Size_y string = "500"
 var Time_gif int = 5
+
+//
+var Loger int = 0
+var Debug bool = false

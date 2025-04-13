@@ -24,7 +24,8 @@ func main() {
 		}
 
 		// Debug
-		bot.Debug = false
+
+		bot.Debug = config_func.Debug
 
 		log.Printf("active on %s", bot.Self.UserName)
 

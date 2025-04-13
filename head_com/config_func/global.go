@@ -46,14 +46,16 @@ func Del_temp(dirPath string) {
 }
 
 func Log_append(text string) {
-	f, err := os.OpenFile("data/log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Println("error open log.txt:", err)
-		return
-	}
-	defer f.Close()
+	if Loger == 1 {
+		f, err := os.OpenFile("data/log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Println("error open log.txt:", err)
+			return
+		}
+		defer f.Close()
 
-	if _, err := f.WriteString(text + "\n"); err != nil {
-		log.Println("error in log.txt:", err)
+		if _, err := f.WriteString(text + "\n"); err != nil {
+			log.Println("error in log.txt:", err)
+		}
 	}
 }

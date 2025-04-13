@@ -21,15 +21,8 @@ elseif ($let -eq 2) {
     .\head.exe
 }
 elseif ($let -eq 3) {
-    Push-Location
-    try {
-        cd app_back_end
-        go build -ldflags="-H windowsgui"
-        .\head.exe
-    }
-    finally {
-        Pop-Location
-    }
+    go build -ldflags="-H windowsgui"
+    .\head.exe
 }
 elseif ($let -eq 4) {
     Push-Location
