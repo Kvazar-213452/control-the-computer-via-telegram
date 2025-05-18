@@ -2,8 +2,6 @@
 
 This program allows you to control a computer through a Telegram bot.
 
-## Getting Started
-
 ### Build
 
 Compile the program using the following command:
